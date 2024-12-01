@@ -1,5 +1,5 @@
 const express = require('express')
-const { registerUser, loginUser } = require('./authController')
+const { registerUser, loginUser, logoutUser } = require('./authController')
 const { authenticateToken } = require('./authMiddleware')
 const router = express.Router()
 
@@ -20,5 +20,8 @@ router.post('/login', loginUser)
 router.get('/profile', authenticateToken, (req, res) => {
   res.json({ message: `Bienvenido, usuario con ID: ${req.user.id}` })
 })
-
+router.post('/logout', logoutUser, (req, res) => {
+  // Si el token se almacena en el cliente (localStorage o cookies), el cliente es responsable de eliminarlo.
+  res.status(200).json({ message: 'Sesión cerrada correctamente.' })
+})
 module.exports = router

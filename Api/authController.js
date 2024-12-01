@@ -96,14 +96,14 @@ const loginUser = async (req, res) => {
     }
 
     const user = results[0]
-
     // Comparar la contraseña (con hash)
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
       return res.status(400).json({ error: 'Correo electrónico o contraseña incorrectos' })
     }
-    const payload = { id: user.usuario, email: user.email }
+    const userCategory = user.categoria
+    const payload = { id: user.usuario, email: user.email, categoria: userCategory }
     // Datos que contiene el token
     const token = jwt.sign(
       payload, // Datos que contiene el token
@@ -116,8 +116,25 @@ const loginUser = async (req, res) => {
     res.status(500).json({ error: 'Error al procesar la solicitud' })
   }
 }
+const logoutUser = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1] // Obtiene el token del header
+    if (!token) {
+      return res.status(400).json({ error: 'Token no proporcionado.' })
+    }
 
+    // Almacenar el token en la tabla 'revoked_tokens'
+    const query = 'INSERT INTO revoked_tokens (token) VALUES (?)'
+    await db.execute(query, [token])
+
+    res.status(200).json({ message: 'Sesión cerrada correctamente.' })
+  } catch (err) {
+    console.error('Error al procesar la solicitud:', err.message)
+    res.status(500).json({ error: 'Error al procesar la solicitud.' })
+  }
+}
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
+  logoutUser
 }
