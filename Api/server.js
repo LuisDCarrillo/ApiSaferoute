@@ -1,23 +1,26 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const authRoutes = require('./authRoutes'); // Importar las rutas de autenticación
+require('dotenv').config()
+const express = require('express')
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+const cors = require('cors')
+const authRoutes = require('./authRoutes') // Importar las rutas de autenticación
+const app = express()
+
+app.use(cors()) // Habilitar CORS
+
+app.use(express.json())
+
+// Registra las rutas
 
 // Usar las rutas de autenticación
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes)
 
 // Ruta básica para pruebas
 app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente');
-});
+  res.send('Servidor funcionando correctamente')
+})
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+  console.log(`Servidor corriendo en http://localhost:${PORT}`)
+})
