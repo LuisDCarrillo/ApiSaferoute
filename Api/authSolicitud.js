@@ -85,6 +85,23 @@ const services = async (req, res) => {
     `
     const [guiaResult] = await db.query(guiaQuery, [rutaId, solicitudId, fechaSalida, precio, tiposPagosId])
 
+    // Obtener los datos de transporte
+    console.log('Obteniendo datos de transporte...')
+    const [transporteDatos] = await db.query('SELECT matricula, transportista_doc FROM transportes WHERE tipo_transporte_id = ?', [tipoTransporteId])
+
+    if (transporteDatos.length === 0) {
+      return res.status(400).json({ error: 'No se encontró transporte disponible para este tipo.' })
+    }
+
+    const { matricula, transportista_doc } = transporteDatos[0]
+
+    // Insertando en la tabla transporte_servicio
+    console.log('Insertando en transporte_servicio...')
+    const [transporteServicioResult] = await db.query(
+      'INSERT INTO transporte_servicio (chofer_doc, transporte_matricula, guias_cargas_id) VALUES (?, ?, ?)',
+      [transportista_doc, matricula, guiaResult.insertId]
+    )
+    console.log('Transporte Servicio Insertado:', transporteServicioResult)
     return res.status(201).json({ message: 'Solicitud registrada exitosamente', solicitudId, guiaId: guiaResult.insertId })
   } catch (err) {
     console.error('Error al procesar la solicitud:', err)
