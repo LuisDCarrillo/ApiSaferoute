@@ -2,6 +2,7 @@ const express = require('express')
 const { registerUser, loginUser, logoutUser } = require('./authController')
 const { authenticateToken } = require('./authMiddleware')
 const { services } = require('./authSolicitud') // Importar correctamente la función 'services'
+const { driver } = require('./getSolicitud')
 const router = express.Router()
 
 // Ruta pública
@@ -32,5 +33,7 @@ router.post('/logout', logoutUser, (req, res) => {
 
 // Ruta para registrar solicitud de servicio
 router.post('/services', services) // Usar la función 'services' importada
+
+router.get('/driver', driver) // Usar la función 'services' importada
 
 module.exports = router

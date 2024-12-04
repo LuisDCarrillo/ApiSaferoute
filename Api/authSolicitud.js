@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const db = require('./db')
 
 // Función para calcular la distancia entre dos coordenadas
