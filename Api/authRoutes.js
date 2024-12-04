@@ -3,6 +3,7 @@ const { registerUser, loginUser, logoutUser } = require('./authController')
 const { authenticateToken } = require('./authMiddleware')
 const { services } = require('./authSolicitud') // Importar correctamente la función 'services'
 const { driver } = require('./getSolicitud')
+const { createToqueRuta } = require('./createToqueRuta')
 const router = express.Router()
 
 // Ruta pública
@@ -18,7 +19,7 @@ router.get('/protected', authenticateToken, (req, res) => {
 // Ruta de registro
 router.post('/register', registerUser)
 
-// Ruta de inicio de sesión
+// Ruta de inicio de sesióncon
 router.post('/login', loginUser)
 
 // Rutas protegidas
@@ -36,4 +37,5 @@ router.post('/services', services) // Usar la función 'services' importada
 
 router.get('/driver', driver) // Usar la función 'services' importada
 
+router.post('/createToqueRuta', createToqueRuta)
 module.exports = router
