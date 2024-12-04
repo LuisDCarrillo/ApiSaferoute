@@ -4,6 +4,7 @@ const { authenticateToken } = require('./authMiddleware')
 const { services } = require('./authSolicitud') // Importar correctamente la función 'services'
 const { driver } = require('./getSolicitud')
 const { createToqueRuta } = require('./createToqueRuta')
+const { reportarIncidencia } = require('./reportarIncidencia')
 const router = express.Router()
 
 // Ruta pública
@@ -38,4 +39,5 @@ router.post('/services', services) // Usar la función 'services' importada
 router.get('/driver', driver) // Usar la función 'services' importada
 
 router.post('/createToqueRuta', createToqueRuta)
+router.post('/reportarIncidencia', reportarIncidencia)
 module.exports = router
